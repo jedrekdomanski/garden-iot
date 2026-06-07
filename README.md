@@ -1,6 +1,6 @@
 # 🌱 Garden IoT — Automated Irrigation System
 
-An ESP32-based automated garden irrigation system that measures soil moisture, controls a water relay, and streams telemetry to AWS with real-time visualization via Grafana Cloud.
+An ESP32-based automated garden irrigation system that measures soil moisture, controls a water pump, and streams telemetry to AWS with real-time visualization via Grafana Cloud.
 
 ## Motivation
 
