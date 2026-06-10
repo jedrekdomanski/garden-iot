@@ -6,13 +6,15 @@ An ESP32-based automated garden irrigation system that measures soil moisture, c
 
 The idea behind this project was simple — being able to travel, go on holidays, or simply leave home for a day or two without worrying that the vegetables and herbs would die. Instead of relying on someone to water the plants or coming back to a dried-out garden, the system takes care of it automatically. It monitors soil moisture around the clock and waters only when needed, while giving full visibility into what's happening remotely through the Grafana dashboard.
 
-![System Architecture](garden-irrigation-monitoring-architecture.png)
+The garden is also planned to grow over time — more plants, more zones, more automation. The system is designed with that in mind, making it easy to extend with additional sensors and devices as the garden expands.
 
 ## How it works
 
 The ESP32 is a low-cost, low-power microcontroller with built-in WiFi and Bluetooth, widely used in IoT projects. It features a dual-core 240MHz processor, 520KB of RAM, and a deep sleep mode that draws only ~10µA — making it ideal for battery-powered or solar-powered applications. In this project it runs Arduino firmware compiled with PlatformIO and uses its built-in ADC to read the soil moisture sensor.
 
 The ESP32 wakes from deep sleep every hour, measures soil moisture, decides whether to water, reports all events to AWS, then goes back to sleep. The entire active cycle takes only a few seconds, making it extremely power efficient.
+
+![Hardware Diagram](garden-irrigation-system-diagram.png)
 
 ### Measurement & watering logic
 
@@ -34,14 +36,25 @@ The ESP32 wakes from deep sleep every hour, measures soil moisture, decides whet
 | `watering_skipped` | Soil moisture sufficient, watering not needed |
 | `device_sleeping` | Device entering deep sleep |
 
+## Hardware
+
+| Component | Details |
+|---|---|
+| ESP32 DevKit | Dual-core 240MHz, built-in WiFi, deep sleep ~10µA |
+| Capacitive soil moisture sensor | GPIO 32 (ADC) |
+| Relay module | GPIO 27 — switches power to the water pump |
+| Water pump | Controlled via relay module |
+
 ## AWS Architecture
+
+![System Architecture](garden-irrigation-monitoring-architecture.png)
 
 ### Ingest pipeline
 - **API Gateway** — HTTPS endpoint secured with a custom API key authorizer Lambda
 - **Ingest Lambda** — validates and writes events to DynamoDB, forwards to EventBridge
 - **DynamoDB** — stores all events with a 1-year TTL auto-expiry
-- **EventBridge** — routes `watering_started` events to the alert Lambda
-- **SES** — sends email alerts when irrigation is triggered
+- **EventBridge** — routes `measurement_taken` events with moisture < 30% to the alert Lambda
+- **SES** — sends email alerts when soil moisture is critically low
 
 ### Visualization pipeline
 - **Query Lambda** — queries DynamoDB and returns JSON, supports `from`, `to`, and `limit` parameters
@@ -50,8 +63,8 @@ The ESP32 wakes from deep sleep every hour, measures soil moisture, decides whet
 ## Grafana Dashboard
 
 Three panels:
-- **Soil Moisture** — time series of moisture % over time
 - **Current Moisture** — stat panel with color thresholds (green > 45%, yellow > 25%, red below)
+- **Soil Moisture** — time series of moisture % over time
 - **Event Log** — full table of all device events with timestamps
 
 ## Project structure
@@ -114,14 +127,3 @@ terraform output -raw api_key
 1. Install the **Infinity** datasource plugin
 2. Add a new Infinity datasource with header `x-api-key` set to your API key and allowed host set to your API Gateway domain
 3. Create panels using `GET https://<api-endpoint>/metrics` as the data source URL
-
-## Hardware
-
-| Component | Details |
-|---|---|
-| ESP32 DevKit | Dual-core 240MHz, built-in WiFi, deep sleep ~10µA |
-| Capacitive soil moisture sensor | GPIO 32 (ADC) |
-| Relay module | GPIO 27 — switches power to the water pump |
-| Water pump | Controlled via relay module |
-
-![Hardware Diagram](garden-irrigation-system-diagram.png)
