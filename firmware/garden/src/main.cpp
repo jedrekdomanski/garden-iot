@@ -10,7 +10,7 @@
 // --- Calibration ---
 const int DRY_VALUE          = 4095;
 const int WET_VALUE          = 980;
-const int MOISTURE_THRESHOLD = 35;
+const int MOISTURE_THRESHOLD = 50;
 
 void connectWifi() {
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -118,7 +118,7 @@ void setup() {
     ));
 
     digitalWrite(RELAY_PIN, LOW);
-    delay(5000);
+    delay(7000);
     digitalWrite(RELAY_PIN, HIGH);
 
     publishEvent(buildEvent("watering_finished", "\"duration_seconds\":5"));
