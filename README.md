@@ -6,7 +6,7 @@ An ESP32-based automated garden irrigation system that measures soil moisture, c
 
 The idea behind this project was simple — being able to travel, go on holidays, or simply leave home for a day or two without worrying that the vegetables and herbs would die. Instead of relying on someone to water the plants or coming back to a dried-out garden, the system takes care of it automatically. It monitors soil moisture around the clock and waters only when needed, while giving full visibility into what's happening remotely through the Grafana dashboard.
 
-![System Architecture](ESP32%20Irrigation%20Controller-2026-06-07-211518.png)
+![System Architecture](garden-irrigation-monitoring-architecture.png)
 
 ## How it works
 
@@ -123,3 +123,5 @@ terraform output -raw api_key
 | Capacitive soil moisture sensor | GPIO 32 (ADC) |
 | Relay module | GPIO 27 — switches power to the water pump |
 | Water pump | Controlled via relay module |
+
+![Hardware Diagram](garden-irrigation-system-diagram.png)
