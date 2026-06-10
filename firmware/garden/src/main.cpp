@@ -118,7 +118,7 @@ void setup() {
     ));
 
     digitalWrite(RELAY_PIN, LOW);
-    delay(5000);
+    delay(7000);
     digitalWrite(RELAY_PIN, HIGH);
 
     publishEvent(buildEvent("watering_finished", "\"duration_seconds\":5"));
