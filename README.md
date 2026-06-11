@@ -21,7 +21,7 @@ The ESP32 wakes from deep sleep every hour, measures soil moisture, decides whet
 1. Powers the capacitive soil moisture sensor
 2. Takes 10 averaged ADC readings for accuracy
 3. Maps the raw value to a 0–100% moisture percentage using calibrated dry/wet values
-4. If moisture is below the threshold (50%), opens the water relay for 7 seconds
+4. If moisture is below the threshold (50%), opens the water relay for 30 seconds
 5. Reports the outcome (`watering_started` / `watering_skipped`) to AWS
 6. Goes back to deep sleep for 1 hour
 
