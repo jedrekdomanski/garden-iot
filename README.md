@@ -43,7 +43,7 @@ The ESP32 wakes from deep sleep every hour, measures soil moisture, decides whet
 | ESP32 DevKit | Dual-core 240MHz, built-in WiFi, deep sleep ~10µA |
 | HW-080 Capacitive soil moisture sensor | GPIO 32 (ADC) |
 | MOD-01997 Relay module | GPIO 27 — switches power to the water pump |
-| Water pump | Controlled via relay module |
+| Water pump | 12V — controlled via relay module |
 
 ## AWS Architecture
 

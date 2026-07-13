@@ -118,10 +118,10 @@ void setup() {
     ));
 
     digitalWrite(RELAY_PIN, LOW);
-    delay(30000);
+    delay(20000);
     digitalWrite(RELAY_PIN, HIGH);
 
-    publishEvent(buildEvent("watering_finished", "\"duration_seconds\":30"));
+    publishEvent(buildEvent("watering_finished", "\"duration_seconds\":20"));
   } else {
     publishEvent(buildEvent(
       "watering_skipped",
