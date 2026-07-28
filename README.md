@@ -21,7 +21,7 @@ The ESP32 wakes from deep sleep every hour, measures soil moisture, decides whet
 1. Powers the capacitive soil moisture sensor
 2. Takes 10 averaged ADC readings for accuracy
 3. Maps the raw value to a 0–100% moisture percentage using calibrated dry/wet values
-4. If moisture is below the threshold (60%), opens the water relay for 30 seconds
+4. If moisture is below the threshold (60%), triggers the MOSFET transistor to run the water pump for 20 seconds
 5. Reports the outcome (`watering_started` / `watering_skipped`) to AWS
 6. Goes back to deep sleep for 1 hour
 
@@ -31,8 +31,8 @@ The ESP32 wakes from deep sleep every hour, measures soil moisture, decides whet
 |---|---|
 | `device_boot` | Device woke up and connected to WiFi |
 | `measurement_taken` | Soil moisture reading with raw value and percentage |
-| `watering_started` | Relay opened, irrigation triggered |
-| `watering_finished` | Relay closed, irrigation complete |
+| `watering_started` | MOSFET triggered, irrigation started |
+| `watering_finished` | MOSFET off, irrigation complete |
 | `watering_skipped` | Soil moisture sufficient, watering not needed |
 | `device_sleeping` | Device entering deep sleep |
 
@@ -42,8 +42,8 @@ The ESP32 wakes from deep sleep every hour, measures soil moisture, decides whet
 |---|---|
 | ESP32 DevKit | Dual-core 240MHz, built-in WiFi, deep sleep ~10µA |
 | HW-080 Capacitive soil moisture sensor | GPIO 32 (ADC) |
-| MOD-01997 Relay module | GPIO 27 — switches power to the water pump |
-| Water pump | 12V — controlled via relay module |
+| MOSFET transistor | GPIO 27 — switches power to the water pump |
+| Water pump | 12V — controlled via MOSFET transistor |
 
 ## AWS Architecture
 
